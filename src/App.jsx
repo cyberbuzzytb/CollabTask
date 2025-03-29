@@ -223,266 +223,269 @@ function App() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" gutterBottom align="center">
-        📝 CollabTask - To-Do List
-      </Typography>
+    <Container maxWidth="xl">
+      <Paper elevation={3} sx={{ p: 3, my: 4 }}>
+        <Typography variant="h4" gutterBottom align="center">
+          📝 CollabTask - To-Do List
+        </Typography>
 
-      <Paper sx={{ p: 2, mb: 3 }}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid columns={{ xs: 12, sm: 6, md: 4 }}>
-            <TextField
-              label="New Task"
-              variant="outlined"
-              fullWidth
-              value={newTask}
-              onChange={(e) => setNewTask(e.target.value)}
-            />
-          </Grid>
-          <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel>Priority</InputLabel>
-              <Select
-                value={priority}
-                label="Priority"
-                onChange={(e) => setPriority(e.target.value)}
+        <Paper sx={{ p: 2, mb: 3 }}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid columns={{ xs: 12, sm: 6, md: 4 }}>
+              <TextField
+                label="New Task"
+                variant="outlined"
+                fullWidth
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+              />
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel>Priority</InputLabel>
+                <Select
+                  value={priority}
+                  label="Priority"
+                  onChange={(e) => setPriority(e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="low">Low</MenuItem>
+                  <MenuItem value="medium">Medium</MenuItem>
+                  <MenuItem value="high">High</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel>Subject</InputLabel>
+                <Select
+                  value={subject}
+                  label="Subject"
+                  onChange={(e) => setSubject(e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="general">General</MenuItem>
+                  <MenuItem value="English">English</MenuItem>
+                  <MenuItem value="Physics">Physics</MenuItem>
+                  <MenuItem value="Chemistry">Chemistry</MenuItem>
+                  <MenuItem value="Biology">Biology</MenuItem>
+                  <MenuItem value="Maths">Maths</MenuItem>
+                  <MenuItem value="Second Language">Second Language</MenuItem>
+                  <MenuItem value="Geography">Geography</MenuItem>
+                  <MenuItem value="History">History</MenuItem>
+                  <MenuItem value="Economics">Economics</MenuItem>
+                  <MenuItem value="Computer">Computer</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <TextField
+                label="Due Date"
+                type="date"
+                fullWidth
                 size="small"
-              >
-                <MenuItem value="low">Low</MenuItem>
-                <MenuItem value="medium">Medium</MenuItem>
-                <MenuItem value="high">High</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel>Subject</InputLabel>
-              <Select
-                value={subject}
-                label="Subject"
-                onChange={(e) => setSubject(e.target.value)}
-                size="small"
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="general">General</MenuItem>
-                <MenuItem value="English">English</MenuItem>
-                <MenuItem value="Physics">Physics</MenuItem>
-                <MenuItem value="Chemistry">Chemistry</MenuItem>
-                <MenuItem value="Biology">Biology</MenuItem>
-                <MenuItem value="Maths">Maths</MenuItem>
-                <MenuItem value="Second Language">Second Language</MenuItem>
-                <MenuItem value="Geography">Geography</MenuItem>
-                <MenuItem value="History">History</MenuItem>
-                <MenuItem value="Economics">Economics</MenuItem>
-                <MenuItem value="Computer">Computer</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
-            <TextField
-              label="Due Date"
-              type="date"
-              fullWidth
-              size="small"
-              value={dueDate || ''}
-              onChange={(e) => setDueDate(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <CalendarTodayIcon 
-                    sx={{ 
-                      mr: 1, 
-                      color: 'text.secondary',
-                      fontSize: '1.2rem'
-                    }} 
-                  />
-                ),
-              }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              sx={{
-                '& .MuiInputBase-root': {
-                  borderRadius: '8px',
-                  backgroundColor: 'background.paper',
-                  '&:hover': {
-                    backgroundColor: 'action.hover',
-                  },
-                  '&.Mui-focused': {
+                value={dueDate || ''}
+                onChange={(e) => setDueDate(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <CalendarTodayIcon 
+                      sx={{ 
+                        mr: 1, 
+                        color: 'text.secondary',
+                        fontSize: '1.2rem'
+                      }} 
+                    />
+                  ),
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderRadius: '8px',
                     backgroundColor: 'background.paper',
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                    '&.Mui-focused': {
+                      backgroundColor: 'background.paper',
+                    },
                   },
-                },
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'divider',
-                  '&:hover': {
-                    borderColor: 'primary.main',
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'divider',
+                    '&:hover': {
+                      borderColor: 'primary.main',
+                    },
                   },
-                },
-                '& .MuiInputLabel-root': {
-                  color: 'text.secondary',
-                  '&.Mui-focused': {
-                    color: 'primary.main',
+                  '& .MuiInputLabel-root': {
+                    color: 'text.secondary',
+                    '&.Mui-focused': {
+                      color: 'primary.main',
+                    },
                   },
-                },
-              }}
-            />
+                }}
+              />
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <Button variant="contained" color="primary" onClick={addTask} fullWidth>
+                Add Task
+              </Button>
+            </Grid>
           </Grid>
-          <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
-            <Button variant="contained" color="primary" onClick={addTask} fullWidth>
-              Add Task
-            </Button>
+        </Paper>
+
+        <Paper sx={{ p: 2, mb: 3 }}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid columns={{ xs: 12, sm: 6, md: 4 }}>
+              <TextField
+                label="Search tasks"
+                variant="outlined"
+                fullWidth
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                InputProps={{
+                  startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />
+                }}
+              />
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel>Sort By</InputLabel>
+                <Select
+                  value={sortBy}
+                  label="Sort By"
+                  onChange={(e) => setSortBy(e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="createdAt">Created Date</MenuItem>
+                  <MenuItem value="dueDate">Due Date</MenuItem>
+                  <MenuItem value="title">Title</MenuItem>
+                  <MenuItem value="priority">Priority</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel>Order</InputLabel>
+                <Select
+                  value={sortOrder}
+                  label="Order"
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="asc">Ascending</MenuItem>
+                  <MenuItem value="desc">Descending</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <Button
+                variant="outlined"
+                startIcon={<FilterListIcon />}
+                onClick={() => setShowFilters(!showFilters)}
+                fullWidth
+              >
+                Filters
+              </Button>
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={() => setViewMode(viewMode === "list" ? "kanban" : "list")}
+                fullWidth
+              >
+                {viewMode === "list" ? "Kanban View" : "List View"}
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
+
+          <Collapse in={showFilters} timeout={300}>
+            <Box sx={{ mt: 2, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+              <FormControl sx={{ minWidth: 200 }}>
+                <InputLabel>Priority</InputLabel>
+                <Select
+                  value={filters.priority}
+                  label="Priority"
+                  onChange={(e) => handleFilterChange('priority', e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="low">Low</MenuItem>
+                  <MenuItem value="medium">Medium</MenuItem>
+                  <MenuItem value="high">High</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl sx={{ minWidth: 200 }}>
+                <InputLabel>Subject</InputLabel>
+                <Select
+                  value={filters.subject}
+                  label="Subject"
+                  onChange={(e) => handleFilterChange('subject', e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="general">General</MenuItem>
+                  <MenuItem value="English">English</MenuItem>
+                  <MenuItem value="Physics">Physics</MenuItem>
+                  <MenuItem value="Chemistry">Chemistry</MenuItem>
+                  <MenuItem value="Biology">Biology</MenuItem>
+                  <MenuItem value="Maths">Maths</MenuItem>
+                  <MenuItem value="Second Language">Second Language</MenuItem>
+                  <MenuItem value="Geography">Geography</MenuItem>
+                  <MenuItem value="History">History</MenuItem>
+                  <MenuItem value="Economics">Economics</MenuItem>
+                  <MenuItem value="Computer">Computer</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl sx={{ minWidth: 200 }}>
+                <InputLabel>Status</InputLabel>
+                <Select
+                  value={filters.status}
+                  label="Status"
+                  onChange={(e) => handleFilterChange('status', e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="To Do">To Do</MenuItem>
+                  <MenuItem value="In Progress">In Progress</MenuItem>
+                  <MenuItem value="Completed">Completed</MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                variant="outlined"
+                onClick={() => setFilters({ priority: "", subject: "", status: "" })}
+                sx={{ alignSelf: 'flex-end' }}
+              >
+                Clear Filters
+              </Button>
+            </Box>
+          </Collapse>
+        </Paper>
+
+        {viewMode === "kanban" ? (
+          <KanbanBoard
+            tasks={tasks}
+            onUpdateTaskStatus={updateTaskStatus}
+            onDelete={deleteTask}
+            onUpdate={updateTask}
+            onToggle={toggleTask}
+          />
+        ) : (
+          <Grid container spacing={2}>
+            {tasks.map((task) => (
+              <Grid item xs={12} key={task._id}>
+                <TaskItem
+                  task={task}
+                  onDelete={deleteTask}
+                  onUpdate={updateTask}
+                  onToggle={toggleTask}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Paper>
-
-      <Paper sx={{ p: 2, mb: 3 }}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid columns={{ xs: 12, sm: 6, md: 4 }}>
-            <TextField
-              label="Search tasks"
-              variant="outlined"
-              fullWidth
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              InputProps={{
-                startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />
-              }}
-            />
-          </Grid>
-          <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel>Sort By</InputLabel>
-              <Select
-                value={sortBy}
-                label="Sort By"
-                onChange={(e) => setSortBy(e.target.value)}
-                size="small"
-              >
-                <MenuItem value="createdAt">Created Date</MenuItem>
-                <MenuItem value="dueDate">Due Date</MenuItem>
-                <MenuItem value="title">Title</MenuItem>
-                <MenuItem value="priority">Priority</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
-            <FormControl fullWidth>
-              <InputLabel>Order</InputLabel>
-              <Select
-                value={sortOrder}
-                label="Order"
-                onChange={(e) => setSortOrder(e.target.value)}
-                size="small"
-              >
-                <MenuItem value="asc">Ascending</MenuItem>
-                <MenuItem value="desc">Descending</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
-            <Button
-              variant="outlined"
-              startIcon={<FilterListIcon />}
-              onClick={() => setShowFilters(!showFilters)}
-              fullWidth
-            >
-              Filters
-            </Button>
-          </Grid>
-          <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
-            <Button
-              variant="outlined"
-              onClick={() => setViewMode(viewMode === "list" ? "kanban" : "list")}
-              fullWidth
-            >
-              {viewMode === "list" ? "Kanban View" : "List View"}
-            </Button>
-          </Grid>
-        </Grid>
-
-        <Collapse in={showFilters} timeout={300}>
-          <Box sx={{ mt: 2, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-            <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel>Priority</InputLabel>
-              <Select
-                value={filters.priority}
-                label="Priority"
-                onChange={(e) => handleFilterChange('priority', e.target.value)}
-                size="small"
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="low">Low</MenuItem>
-                <MenuItem value="medium">Medium</MenuItem>
-                <MenuItem value="high">High</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel>Subject</InputLabel>
-              <Select
-                value={filters.subject}
-                label="Subject"
-                onChange={(e) => handleFilterChange('subject', e.target.value)}
-                size="small"
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="general">General</MenuItem>
-                <MenuItem value="English">English</MenuItem>
-                <MenuItem value="Physics">Physics</MenuItem>
-                <MenuItem value="Chemistry">Chemistry</MenuItem>
-                <MenuItem value="Biology">Biology</MenuItem>
-                <MenuItem value="Maths">Maths</MenuItem>
-                <MenuItem value="Second Language">Second Language</MenuItem>
-                <MenuItem value="Geography">Geography</MenuItem>
-                <MenuItem value="History">History</MenuItem>
-                <MenuItem value="Economics">Economics</MenuItem>
-                <MenuItem value="Computer">Computer</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel>Status</InputLabel>
-              <Select
-                value={filters.status}
-                label="Status"
-                onChange={(e) => handleFilterChange('status', e.target.value)}
-                size="small"
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="To Do">To Do</MenuItem>
-                <MenuItem value="In Progress">In Progress</MenuItem>
-                <MenuItem value="Completed">Completed</MenuItem>
-              </Select>
-            </FormControl>
-            <Button
-              variant="outlined"
-              onClick={() => setFilters({ priority: "", subject: "", status: "" })}
-              sx={{ alignSelf: 'flex-end' }}
-            >
-              Clear Filters
-            </Button>
-          </Box>
-        </Collapse>
-      </Paper>
-
-      {viewMode === "list" ? (
-        <Box>
-          {tasks.map((task) => (
-            <TaskItem
-              key={task._id}
-              task={task}
-              onDelete={deleteTask}
-              onUpdate={updateTask}
-              onToggle={toggleTask}
-            />
-          ))}
-        </Box>
-      ) : (
-        <KanbanBoard
-          tasks={tasks}
-          onUpdateTaskStatus={updateTaskStatus}
-          onDelete={deleteTask}
-          onUpdate={updateTask}
-          onToggle={toggleTask}
-        />
-      )}
     </Container>
   );
 }
