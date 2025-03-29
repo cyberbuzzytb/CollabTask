@@ -14,13 +14,16 @@ import {
   IconButton,
   useTheme,
   useMediaQuery,
-  Collapse
+  Collapse,
+  Alert,
+  Snackbar
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import TaskItem from "./components/TaskItem";
 import KanbanBoard from "./components/KanbanBoard";
+import LateNightReminder from "./components/LateNightReminder";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -50,12 +53,19 @@ function App() {
     status: ""
   });
   const [error, setError] = useState("");
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+  const [showLateNightReminder, setShowLateNightReminder] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
     fetchTasks();
     checkTimeForReminder();
+    checkLateNight();
   }, [sortBy, sortOrder, searchQuery, filters]);
 
   const checkTimeForReminder = () => {
@@ -70,6 +80,13 @@ function App() {
   const showReminder = () => {
     // Implement reminder logic here
     console.log("Showing reminder for next day's schedule");
+  };
+
+  const checkLateNight = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour >= 21 || currentHour < 1) {
+      setShowLateNightReminder(true);
+    }
   };
 
   const fetchTasks = async () => {
@@ -497,6 +514,26 @@ function App() {
             ))}
           </Grid>
         )}
+
+        <LateNightReminder 
+          open={showLateNightReminder} 
+          onClose={() => setShowLateNightReminder(false)} 
+        />
+
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={6000}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            sx={{ width: "100%" }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </Paper>
     </Container>
   );
