@@ -141,13 +141,26 @@ app.put("/tasks/:id", async (req, res) => {
 app.patch("/tasks/:id/status", async (req, res) => {
   try {
     const { status, order } = req.body;
+    console.log('Updating task status:', { id: req.params.id, status, order });
+    
     const updatedTask = await Task.findByIdAndUpdate(
       req.params.id,
-      { status, order },
+      { 
+        status,
+        order,
+        completed: status === 'Completed'
+      },
       { new: true }
     );
+    
+    if (!updatedTask) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+    
+    console.log('Task updated successfully:', updatedTask);
     res.json(updatedTask);
   } catch (err) {
+    console.error('Error updating task status:', err);
     res.status(500).json({ error: err.message });
   }
 });
