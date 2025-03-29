@@ -36,7 +36,7 @@ const fetchOptions = {
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
-  const [newTaskPriority, setNewTaskPriority] = useState("medium");
+  const [priority, setPriority] = useState("medium");
   const [subject, setSubject] = useState("general");
   const [dueDate, setDueDate] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -105,14 +105,14 @@ function App() {
     if (!newTask.trim()) return;
 
     try {
-      console.log("Attempting to add task:", { title: newTask, priority: newTaskPriority });
+      console.log("Attempting to add task:", { title: newTask, priority: priority });
       const response = await fetch(`${API_URL}/tasks`, {
         ...fetchOptions,
         method: "POST",
         body: JSON.stringify({
           title: newTask,
           description: "",
-          priority: newTaskPriority,
+          priority: priority,
           status: "To Do"
         }),
       });
@@ -127,7 +127,7 @@ function App() {
 
       setTasks([data, ...tasks]);
       setNewTask("");
-      setNewTaskPriority("medium");
+      setPriority("medium");
     } catch (error) {
       console.error("Error adding task:", error);
       setError("Failed to add task. Please try again.");
@@ -231,23 +231,23 @@ function App() {
 
         <Paper sx={{ p: 2, mb: 3 }}>
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} sm={8}>
+            <Grid columns={{ xs: 12, sm: 6, md: 4 }}>
               <TextField
+                label="New Task"
+                variant="outlined"
                 fullWidth
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
-                placeholder="Add a new task..."
-                variant="outlined"
-                size="small"
               />
             </Grid>
-            <Grid item xs={12} sm={2}>
-              <FormControl fullWidth size="small">
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <FormControl fullWidth>
                 <InputLabel>Priority</InputLabel>
                 <Select
-                  value={newTaskPriority}
-                  onChange={(e) => setNewTaskPriority(e.target.value)}
+                  value={priority}
                   label="Priority"
+                  onChange={(e) => setPriority(e.target.value)}
+                  size="small"
                 >
                   <MenuItem value="low">Low</MenuItem>
                   <MenuItem value="medium">Medium</MenuItem>
@@ -255,13 +255,80 @@ function App() {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={2}>
-              <Button
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <FormControl fullWidth>
+                <InputLabel>Subject</InputLabel>
+                <Select
+                  value={subject}
+                  label="Subject"
+                  onChange={(e) => setSubject(e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="general">General</MenuItem>
+                  <MenuItem value="English">English</MenuItem>
+                  <MenuItem value="Physics">Physics</MenuItem>
+                  <MenuItem value="Chemistry">Chemistry</MenuItem>
+                  <MenuItem value="Biology">Biology</MenuItem>
+                  <MenuItem value="Maths">Maths</MenuItem>
+                  <MenuItem value="Second Language">Second Language</MenuItem>
+                  <MenuItem value="Geography">Geography</MenuItem>
+                  <MenuItem value="History">History</MenuItem>
+                  <MenuItem value="Economics">Economics</MenuItem>
+                  <MenuItem value="Computer">Computer</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <TextField
+                label="Due Date"
+                type="date"
                 fullWidth
-                variant="contained"
-                type="submit"
-                disabled={!newTask.trim()}
-              >
+                size="small"
+                value={dueDate || ''}
+                onChange={(e) => setDueDate(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <CalendarTodayIcon 
+                      sx={{ 
+                        mr: 1, 
+                        color: 'text.secondary',
+                        fontSize: '1.2rem'
+                      }} 
+                    />
+                  ),
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderRadius: '8px',
+                    backgroundColor: 'background.paper',
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
+                    '&.Mui-focused': {
+                      backgroundColor: 'background.paper',
+                    },
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'divider',
+                    '&:hover': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'text.secondary',
+                    '&.Mui-focused': {
+                      color: 'primary.main',
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid columns={{ xs: 12, sm: 6, md: 2 }}>
+              <Button variant="contained" color="primary" onClick={addTask} fullWidth>
                 Add Task
               </Button>
             </Grid>
