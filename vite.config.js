@@ -16,10 +16,5 @@ export default defineConfig({
     sourcemap: true,
     outDir: 'dist',
     assetsDir: 'assets'
-  },
-  resolve: {
-    alias: {
-      '@hello-pangea/dnd': '@hello-pangea/dnd/dist/react-beautiful-dnd'
-    }
   }
 })
