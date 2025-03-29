@@ -2,14 +2,16 @@ import { Box, Paper, Typography, Grid } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import TaskItem from "./TaskItem";
 
-const KanbanBoard = ({ tasks, onUpdateTaskStatus, onDelete, onUpdate, onToggle }) => {
+const KanbanBoard = ({ tasks = [], onUpdateTaskStatus, onDelete, onUpdate, onToggle }) => {
   const columns = {
-    "To Do": tasks.filter((task) => task.status === "To Do"),
-    "In Progress": tasks.filter((task) => task.status === "In Progress"),
-    "Completed": tasks.filter((task) => task.status === "Completed"),
+    "To Do": tasks.filter((task) => task?.status === "To Do"),
+    "In Progress": tasks.filter((task) => task?.status === "In Progress"),
+    "Completed": tasks.filter((task) => task?.status === "Completed"),
   };
 
   const onDragEnd = (result) => {
+    if (!result) return;
+    
     const { destination, source, draggableId } = result;
 
     // Drop outside the list
@@ -24,7 +26,9 @@ const KanbanBoard = ({ tasks, onUpdateTaskStatus, onDelete, onUpdate, onToggle }
     }
 
     // Get the task being dragged
-    const task = tasks.find((t) => t._id === draggableId);
+    const task = tasks.find((t) => t?._id === draggableId);
+    if (!task) return;
+
     const newStatus = destination.droppableId;
     const newOrder = destination.index;
 
@@ -36,7 +40,7 @@ const KanbanBoard = ({ tasks, onUpdateTaskStatus, onDelete, onUpdate, onToggle }
     <DragDropContext onDragEnd={onDragEnd}>
       <Grid container spacing={2}>
         {Object.entries(columns).map(([status, columnTasks]) => (
-          <Grid columns={{ xs: 12, sm: 6, md: 4 }} key={status}>
+          <Grid item xs={12} sm={6} md={4} key={status}>
             <Paper
               sx={{
                 p: 2,
@@ -64,8 +68,8 @@ const KanbanBoard = ({ tasks, onUpdateTaskStatus, onDelete, onUpdate, onToggle }
                   >
                     {columnTasks.map((task, index) => (
                       <Draggable
-                        key={task._id}
-                        draggableId={task._id}
+                        key={task?._id || index}
+                        draggableId={task?._id || `task-${index}`}
                         index={index}
                       >
                         {(provided, snapshot) => (
