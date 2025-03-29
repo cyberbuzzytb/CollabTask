@@ -131,15 +131,21 @@ const TaskItem = ({ task, onDelete, onUpdate, onToggle }) => {
           </Stack>
           <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
             <Button
-              variant="outlined"
+              variant="contained"
               size="small"
               onClick={handleCancel}
+              color="error"
               sx={{ 
                 px: 3,
                 py: 1,
                 borderRadius: 2,
                 textTransform: 'none',
-                fontWeight: 600
+                fontWeight: 600,
+                boxShadow: 2,
+                '&:hover': {
+                  boxShadow: 3,
+                  transform: 'translateY(-1px)'
+                }
               }}
             >
               Cancel
@@ -148,12 +154,18 @@ const TaskItem = ({ task, onDelete, onUpdate, onToggle }) => {
               variant="contained"
               size="small"
               onClick={handleSave}
+              color="primary"
               sx={{ 
                 px: 3,
                 py: 1,
                 borderRadius: 2,
                 textTransform: 'none',
-                fontWeight: 600
+                fontWeight: 600,
+                boxShadow: 2,
+                '&:hover': {
+                  boxShadow: 3,
+                  transform: 'translateY(-1px)'
+                }
               }}
             >
               Save Changes
