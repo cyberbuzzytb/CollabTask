@@ -7,18 +7,8 @@ import Task from "./models/Task.js"; // Import Task model
 dotenv.config(); // Load .env variables
 
 const app = express();
-
-// Enable CORS for all routes
-app.use(cors({
-  origin: [
-    'http://localhost:5173', // Local development
-    'https://collabtask-frontend.onrender.com', // Production frontend
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  credentials: true
-}));
-
 app.use(express.json());
+app.use(cors());
 
 // Connect to MongoDB
 mongoose
@@ -30,6 +20,13 @@ mongoose
     testTask.save().then(() => console.log("Test task saved!")).catch(err => console.error("Error saving test task:", err));
   })
   .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  console.log('Request body:', req.body);
+  next();
+});
 
 // 🟢 API ROUTES
 
@@ -71,6 +68,7 @@ app.get("/tasks", async (req, res) => {
 
 // ➤ Add a new task
 app.post("/tasks", async (req, res) => {
+  console.log('Received task creation request:', req.body);
   const task = new Task({
     title: req.body.title,
     description: req.body.description,
@@ -82,9 +80,12 @@ app.post("/tasks", async (req, res) => {
   });
 
   try {
+    console.log('Attempting to save task:', task);
     const newTask = await task.save();
+    console.log('Task saved successfully:', newTask);
     res.status(201).json(newTask);
   } catch (error) {
+    console.error('Error saving task:', error);
     res.status(400).json({ message: error.message });
   }
 });

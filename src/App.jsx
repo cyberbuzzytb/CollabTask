@@ -82,6 +82,15 @@ function App() {
   const addTask = async () => {
     if (newTask.trim() !== "") {
       try {
+        console.log('Attempting to add task:', {
+          title: newTask,
+          description: newTask,
+          priority: priority || "medium",
+          subject,
+          dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+          status: 'To Do'
+        });
+
         const response = await fetch(`${API_URL}/tasks`, {
           method: 'POST',
           headers: {
@@ -97,15 +106,19 @@ function App() {
           }),
         });
 
+        console.log('Response status:', response.status);
+        const responseData = await response.json();
+        console.log('Response data:', responseData);
+
         if (response.ok) {
-          const savedTask = await response.json();
-          setTasks([savedTask, ...tasks]);
+          setTasks([responseData, ...tasks]);
           setNewTask("");
           setPriority("medium");
           setSubject("general");
           setDueDate("");
         } else {
           console.error('Failed to add task:', response.statusText);
+          console.error('Error details:', responseData);
         }
       } catch (error) {
         console.error('Error adding task:', error);
