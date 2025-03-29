@@ -15,9 +15,9 @@ export default defineConfig({
     },
     sourcemap: true,
     outDir: 'dist',
-    assetsDir: 'assets',
-    rollupOptions: {
-      external: ['@hello-pangea/dnd']
-    }
+    assetsDir: 'assets'
+  },
+  optimizeDeps: {
+    include: ['@hello-pangea/dnd']
   }
 })
