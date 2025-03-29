@@ -15,6 +15,20 @@ export default defineConfig({
     },
     sourcemap: true,
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['react', 'react-dom'],
+          'mui': ['@mui/material', '@mui/icons-material'],
+          'dnd': ['@hello-pangea/dnd']
+        }
+      }
+    }
+  },
+  server: {
+    port: 5173,
+    strictPort: true,
+    host: true
   }
 })
