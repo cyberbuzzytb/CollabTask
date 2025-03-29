@@ -22,6 +22,17 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import TaskItem from "./components/TaskItem";
 import KanbanBoard from "./components/KanbanBoard";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+// Add fetch options
+const fetchOptions = {
+  credentials: 'include',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
@@ -38,7 +49,7 @@ function App() {
     subject: "",
     status: ""
   });
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const [error, setError] = useState("");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -71,58 +82,55 @@ function App() {
         ...(filters.subject && { subject: filters.subject }),
         ...(filters.status && { status: filters.status })
       });
-      const response = await fetch(`${API_URL}/tasks?${queryParams}`);
+
+      const response = await fetch(`${API_URL}/tasks?${queryParams}`, {
+        ...fetchOptions,
+        method: 'GET'
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       setTasks(data);
     } catch (error) {
-      console.error('Error fetching tasks:', error);
+      console.error("Error fetching tasks:", error);
+      setError("Failed to fetch tasks. Please try again later.");
     }
   };
 
-  const addTask = async () => {
-    if (newTask.trim() !== "") {
-      try {
-        console.log('Attempting to add task:', {
+  const addTask = async (e) => {
+    e.preventDefault();
+    if (!newTask.trim()) return;
+
+    try {
+      console.log("Attempting to add task:", { title: newTask, priority: priority });
+      const response = await fetch(`${API_URL}/tasks`, {
+        ...fetchOptions,
+        method: "POST",
+        body: JSON.stringify({
           title: newTask,
-          description: newTask,
-          priority: priority || "medium",
-          subject,
-          dueDate: dueDate ? new Date(dueDate).toISOString() : null,
-          status: 'To Do'
-        });
+          description: "",
+          priority: priority,
+          status: "To Do"
+        }),
+      });
 
-        const response = await fetch(`${API_URL}/tasks`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            title: newTask,
-            description: newTask,
-            priority: priority || "medium",
-            subject,
-            dueDate: dueDate ? new Date(dueDate).toISOString() : null,
-            status: 'To Do'
-          }),
-        });
+      console.log("Response status:", response.status);
+      const data = await response.json();
+      console.log("Response data:", data);
 
-        console.log('Response status:', response.status);
-        const responseData = await response.json();
-        console.log('Response data:', responseData);
-
-        if (response.ok) {
-          setTasks([responseData, ...tasks]);
-          setNewTask("");
-          setPriority("medium");
-          setSubject("general");
-          setDueDate("");
-        } else {
-          console.error('Failed to add task:', response.statusText);
-          console.error('Error details:', responseData);
-        }
-      } catch (error) {
-        console.error('Error adding task:', error);
+      if (!response.ok) {
+        throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
+
+      setTasks([data, ...tasks]);
+      setNewTask("");
+      setPriority("medium");
+    } catch (error) {
+      console.error("Error adding task:", error);
+      setError("Failed to add task. Please try again.");
     }
   };
 
@@ -147,34 +155,42 @@ function App() {
     }
   };
 
-  const deleteTask = async (taskId) => {
+  const deleteTask = async (id) => {
     try {
-      const response = await fetch(`${API_URL}/tasks/${taskId}`, {
-        method: 'DELETE',
+      const response = await fetch(`${API_URL}/tasks/${id}`, {
+        ...fetchOptions,
+        method: "DELETE"
       });
 
-      if (response.ok) {
-        setTasks(tasks.filter(task => task._id !== taskId));
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      setTasks(tasks.filter(task => task._id !== id));
     } catch (error) {
-      console.error('Error deleting task:', error);
+      console.error("Error deleting task:", error);
+      setError("Failed to delete task. Please try again.");
     }
   };
 
-  const toggleTask = async (taskId) => {
+  const toggleTask = async (id) => {
     try {
-      const response = await fetch(`${API_URL}/tasks/${taskId}/toggle`, {
-        method: 'PATCH',
+      const response = await fetch(`${API_URL}/tasks/${id}/toggle`, {
+        ...fetchOptions,
+        method: "PATCH"
       });
 
-      if (response.ok) {
-        const updatedTask = await response.json();
-        setTasks(tasks.map(task => 
-          task._id === taskId ? updatedTask : task
-        ));
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const updatedTask = await response.json();
+      setTasks(tasks.map(task => 
+        task._id === id ? updatedTask : task
+      ));
     } catch (error) {
-      console.error('Error toggling task:', error);
+      console.error("Error toggling task:", error);
+      setError("Failed to update task. Please try again.");
     }
   };
 
