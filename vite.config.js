@@ -5,37 +5,16 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Vendor chunks
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-mui': ['@mui/material', '@mui/icons-material'],
-          'vendor-dnd': ['react-beautiful-dnd'],
-          
-          // Feature chunks
-          'task-management': ['./src/components/TaskItem.jsx', './src/components/KanbanBoard.jsx'],
-          'utils': ['./src/utils/dateUtils.js', './src/utils/priorityUtils.js']
-        }
-      }
-    },
-    chunkSizeWarningLimit: 1000, // Increase chunk size warning limit to 1000kb
+    chunkSizeWarningLimit: 1000,
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Remove console.logs in production
+        drop_console: true,
         drop_debugger: true
       }
-    }
-  },
-  server: {
-    port: 5173,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5000',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
+    },
+    sourcemap: true,
+    outDir: 'dist',
+    assetsDir: 'assets'
   }
 })
