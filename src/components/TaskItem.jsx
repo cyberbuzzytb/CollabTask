@@ -10,7 +10,9 @@ import {
   Box,
   Typography,
   Chip,
-  Stack
+  Stack,
+  Divider,
+  Paper
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -63,12 +65,20 @@ const TaskItem = ({ task, onDelete, onUpdate, onToggle }) => {
 
   if (isEditing) {
     return (
-      <ListItem
+      <Paper
+        elevation={2}
         sx={{
-          bgcolor: "background.paper",
-          mb: 1,
-          borderRadius: 1,
-          boxShadow: 1,
+          p: 3,
+          mb: 3,
+          borderRadius: 3,
+          border: '1px solid',
+          borderColor: 'divider',
+          bgcolor: 'background.paper',
+          transition: 'all 0.3s ease-in-out',
+          '&:hover': {
+            boxShadow: 4,
+            borderColor: 'primary.main'
+          }
         }}
       >
         <Box sx={{ width: "100%" }}>
@@ -79,7 +89,9 @@ const TaskItem = ({ task, onDelete, onUpdate, onToggle }) => {
               setEditedTask({ ...editedTask, title: e.target.value })
             }
             size="small"
-            sx={{ mb: 1 }}
+            sx={{ mb: 2 }}
+            label="Title"
+            variant="outlined"
           />
           <TextField
             fullWidth
@@ -89,27 +101,46 @@ const TaskItem = ({ task, onDelete, onUpdate, onToggle }) => {
             }
             size="small"
             multiline
-            rows={2}
-            sx={{ mb: 1 }}
+            rows={3}
+            sx={{ mb: 2 }}
+            label="Description"
+            variant="outlined"
           />
-          <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+          <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
             <Chip
               label={editedTask.subject}
               size="small"
               color="primary"
               variant="outlined"
+              sx={{ 
+                fontWeight: 600,
+                px: 1.5,
+                py: 0.5
+              }}
             />
             <Chip
               label={editedTask.priority}
               size="small"
               color={getPriorityColor(editedTask.priority)}
+              sx={{ 
+                fontWeight: 600,
+                px: 1.5,
+                py: 0.5
+              }}
             />
           </Stack>
-          <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
+          <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
             <Button
               variant="outlined"
               size="small"
               onClick={handleCancel}
+              sx={{ 
+                px: 3,
+                py: 1,
+                borderRadius: 2,
+                textTransform: 'none',
+                fontWeight: 600
+              }}
             >
               Cancel
             </Button>
@@ -117,25 +148,38 @@ const TaskItem = ({ task, onDelete, onUpdate, onToggle }) => {
               variant="contained"
               size="small"
               onClick={handleSave}
+              sx={{ 
+                px: 3,
+                py: 1,
+                borderRadius: 2,
+                textTransform: 'none',
+                fontWeight: 600
+              }}
             >
-              Save
+              Save Changes
             </Button>
           </Box>
         </Box>
-      </ListItem>
+      </Paper>
     );
   }
 
   return (
-    <ListItem
+    <Paper
+      elevation={2}
       sx={{
-        bgcolor: "background.paper",
-        mb: 1,
-        borderRadius: 1,
-        boxShadow: 1,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
+        p: 3,
+        mb: 3,
+        borderRadius: 3,
+        border: '1px solid',
+        borderColor: 'divider',
+        bgcolor: 'background.paper',
+        transition: 'all 0.3s ease-in-out',
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: 4,
+          borderColor: 'primary.main'
+        }
       }}
     >
       <Box sx={{ width: "100%", display: "flex", alignItems: "flex-start" }}>
@@ -143,61 +187,112 @@ const TaskItem = ({ task, onDelete, onUpdate, onToggle }) => {
           edge="start"
           checked={task.completed}
           onChange={() => onToggle(task._id)}
-          sx={{ mt: 0.5 }}
+          sx={{ 
+            mt: 0.5,
+            mr: 2,
+            '&.Mui-checked': {
+              color: 'primary.main'
+            },
+            '&:hover': {
+              backgroundColor: 'primary.light',
+              color: 'primary.main'
+            }
+          }}
         />
-        <ListItemText
-          primary={
-            <Typography
-              variant="subtitle1"
-              sx={{
-                textDecoration: task.completed ? "line-through" : "none",
-                color: task.completed ? "text.secondary" : "text.primary",
+        <Box sx={{ flex: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              textDecoration: task.completed ? "line-through" : "none",
+              color: task.completed ? "text.secondary" : "text.primary",
+              fontWeight: 600,
+              mb: 1,
+              fontSize: '1.1rem'
+            }}
+          >
+            {task.title}
+          </Typography>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ 
+              mb: 2,
+              lineHeight: 1.6
+            }}
+          >
+            {task.description}
+          </Typography>
+          <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 1 }}>
+            <Chip
+              label={task.subject}
+              size="small"
+              color="primary"
+              variant="outlined"
+              sx={{ 
+                fontWeight: 600,
+                px: 1.5,
+                py: 0.5
+              }}
+            />
+            <Chip
+              label={task.priority}
+              size="small"
+              color={getPriorityColor(task.priority)}
+              sx={{ 
+                fontWeight: 600,
+                px: 1.5,
+                py: 0.5
+              }}
+            />
+            <Box 
+              sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                color: 'text.secondary',
+                ml: 1,
+                bgcolor: 'action.hover',
+                px: 1.5,
+                py: 0.5,
+                borderRadius: 1
               }}
             >
-              {task.title}
-            </Typography>
-          }
-          secondary={
-            <Box>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ mb: 0.5 }}
-              >
-                {task.description}
+              <CalendarTodayIcon sx={{ fontSize: '1.1rem', mr: 0.5, color: 'primary.main' }} />
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                {formatDate(task.dueDate)}
               </Typography>
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.5 }}>
-                <Chip
-                  label={task.subject}
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                />
-                <Chip
-                  label={task.priority}
-                  size="small"
-                  color={getPriorityColor(task.priority)}
-                />
-                <Box sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}>
-                  <CalendarTodayIcon sx={{ fontSize: '1rem', mr: 0.5 }} />
-                  <Typography variant="caption">
-                    {formatDate(task.dueDate)}
-                  </Typography>
-                </Box>
-              </Stack>
             </Box>
-          }
-        />
-        <ListItemSecondaryAction>
-          <IconButton edge="end" onClick={handleEdit} sx={{ mr: 1 }}>
+          </Stack>
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <IconButton 
+            edge="end" 
+            onClick={handleEdit} 
+            sx={{ 
+              color: 'primary.main',
+              '&:hover': {
+                backgroundColor: 'primary.light',
+                color: 'primary.contrastText'
+              }
+            }}
+          >
             <EditIcon />
           </IconButton>
-          <IconButton edge="end" onClick={() => onDelete(task._id)}>
+          <IconButton 
+            edge="end" 
+            onClick={() => onDelete(task._id)}
+            sx={{ 
+              color: 'error.main',
+              '&:hover': {
+                backgroundColor: 'error.light',
+                color: 'error.contrastText'
+              }
+            }}
+          >
             <DeleteIcon />
           </IconButton>
-        </ListItemSecondaryAction>
+        </Box>
       </Box>
-    </ListItem>
+    </Paper>
   );
 };
 
