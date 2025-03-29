@@ -7,8 +7,20 @@ import Task from "./models/Task.js"; // Import Task model
 dotenv.config(); // Load .env variables
 
 const app = express();
+
+// Configure CORS with specific options
+app.use(cors({
+  origin: [
+    'http://localhost:5173', // Local development
+    'https://collabtask-frontend-wk2w.onrender.com', // Your deployed frontend
+    'https://collabtask-frontend.onrender.com', // Alternative frontend URL
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
-app.use(cors());
 
 // Connect to MongoDB
 mongoose
