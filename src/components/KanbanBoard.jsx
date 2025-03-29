@@ -1,5 +1,5 @@
 import { Box, Paper, Typography, Grid } from "@mui/material";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd/dist/react-beautiful-dnd";
 import TaskItem from "./TaskItem";
 
 const KanbanBoard = ({ tasks, onUpdateTaskStatus, onDelete, onUpdate, onToggle }) => {
