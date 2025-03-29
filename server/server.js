@@ -24,6 +24,16 @@ app.use((err, req, res, next) => {
 
 app.use(express.json());
 
+// Add root route handler
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to CollabTask API' });
+});
+
+// Add health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
@@ -83,17 +93,17 @@ app.get("/tasks", async (req, res) => {
 // ➤ Add a new task
 app.post("/tasks", async (req, res) => {
   console.log('Received task creation request:', req.body);
-  const task = new Task({
-    title: req.body.title,
-    description: req.body.description,
-    priority: req.body.priority || 'medium',
-    dueDate: req.body.dueDate,
-    category: req.body.category || 'general',
-    subject: req.body.subject || 'general',
-    status: req.body.status || 'To Do'
-  });
-
   try {
+    const task = new Task({
+      title: req.body.title,
+      description: req.body.description,
+      priority: req.body.priority || 'medium',
+      dueDate: req.body.dueDate ? new Date(req.body.dueDate) : null,
+      category: req.body.category || 'general',
+      subject: req.body.subject || 'general',
+      status: req.body.status || 'To Do'
+    });
+
     console.log('Attempting to save task:', task);
     const newTask = await task.save();
     console.log('Task saved successfully:', newTask);
