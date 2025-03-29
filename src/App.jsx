@@ -36,7 +36,7 @@ const fetchOptions = {
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
-  const [priority, setPriority] = useState("medium");
+  const [newTaskPriority, setNewTaskPriority] = useState("medium");
   const [subject, setSubject] = useState("general");
   const [dueDate, setDueDate] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -105,14 +105,24 @@ function App() {
     if (!newTask.trim()) return;
 
     try {
-      console.log("Attempting to add task:", { title: newTask, priority: priority });
+      console.log("Attempting to add task:", {
+        title: newTask,
+        description: newTask,
+        priority: newTaskPriority,
+        subject: subject || "general",
+        dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+        status: "To Do"
+      });
+
       const response = await fetch(`${API_URL}/tasks`, {
         ...fetchOptions,
         method: "POST",
         body: JSON.stringify({
           title: newTask,
-          description: "",
-          priority: priority,
+          description: newTask,
+          priority: newTaskPriority,
+          subject: subject || "general",
+          dueDate: dueDate ? new Date(dueDate).toISOString() : null,
           status: "To Do"
         }),
       });
@@ -127,7 +137,9 @@ function App() {
 
       setTasks([data, ...tasks]);
       setNewTask("");
-      setPriority("medium");
+      setNewTaskPriority("medium");
+      setSubject("general");
+      setDueDate("");
     } catch (error) {
       console.error("Error adding task:", error);
       setError("Failed to add task. Please try again.");
@@ -244,9 +256,9 @@ function App() {
               <FormControl fullWidth>
                 <InputLabel>Priority</InputLabel>
                 <Select
-                  value={priority}
+                  value={newTaskPriority}
                   label="Priority"
-                  onChange={(e) => setPriority(e.target.value)}
+                  onChange={(e) => setNewTaskPriority(e.target.value)}
                   size="small"
                 >
                   <MenuItem value="low">Low</MenuItem>
