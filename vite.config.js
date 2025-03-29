@@ -17,7 +17,9 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets'
   },
-  optimizeDeps: {
-    include: ['@hello-pangea/dnd']
+  resolve: {
+    alias: {
+      '@hello-pangea/dnd': '@hello-pangea/dnd/dist/react-beautiful-dnd'
+    }
   }
 })
